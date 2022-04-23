@@ -70,7 +70,7 @@ Det är ok att göra koden så att vissa parametrar behöver ändras manuellt f�
 ### För att undvika onödiga kompletteringar och som en extra kontroll att projektet är utfört enligt instruktionerna samt att innehållet i rapporten är komplett, gå igenom och checka av punkterna nedan innan ni skickar in rapport och kod.
 #### **Ifylld checklista skickas in tillsammans med rapporten.**
 
-- [ ]  Vi har läst informationen om projektet i Canvas samt det inledande kapitlet Instruktioner och tips i projektlydelsen.
+- [X]  Vi har läst informationen om projektet i Canvas samt det inledande kapitlet Instruktioner och tips i projektlydelsen.
 - [ ]  Vi har gjort alla uppgifter och svarat på alla frågor i vårt projekt. Svaren finns redovisade i rapporten.
 - [ ] Vi har använt effektiva numeriska metoder enligt sektionen Instruktioner och tips i projektlydelsen.
 - [ ]  Vi har angett i rapporten vilka metoder/algoritmer vi använder och har förklarat hur vi tillämpar dessa på vårt problem.
