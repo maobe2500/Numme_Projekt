@@ -77,21 +77,15 @@ Det är ok att göra koden så att vissa parametrar behöver ändras manuellt f�
 #### nedan innan ni skickar in rapport och kod.
 #### **Ifylld checklista skickas in tillsammans med rapporten.**
 
-- []  Vi har läst informationen om projektet i Canvas samt det inledande kapitlet Instruktioner och
-        tips i projektlydelsen.
-- []  Vi har gjort alla uppgifter och svarat på alla frågor i vårt projekt. Svaren finns redovisade i
-        rapporten.
-- []  Vi har använt effektiva numeriska metoder enligt sektionen Instruktioner och tips i projektly-
-        delsen.
-- []  Vi har angett i rapporten vilka metoder/algoritmer vi använder och har förklarat hur vi tilläm-
-        par dessa på vårt problem.
-- []  Vi har inkluderat eventuellt efterfrågade härledningar för teorifrågor i rapporten.
-- []  Vi har beskrivit hur vi kommer fram till våra resultat som presenteras i rapporten.
-- []  Vi har gjort en rimlighetsuppskattning av våra resultat.
-- []  Vi har gjort (och presenterar) en tillförlitlighetsbedöming av alla numeriska resultat som pre-
-        senteras i rapporten.
-- []  Vi presenterar resultaten i rapporten med ett rimligt antal siffor.
-- []  Vi har kommenterat och dragit slutsatser av resultaten som presenteras i rapporten.
-- []  Vi har lagt in alla efterfrågade figurer/plottar i rapporten.
-        Plottarna har text på axlarna och en figurtext som förklarar vad plotten visar.
-- []  Vi har beskrivit vår egen arbetsinsats och informerat om eventuella samarbeten i rapporten.
+- [ ]  Vi har läst informationen om projektet i Canvas samt det inledande kapitlet Instruktioner och tips i projektlydelsen.
+- [ ]  Vi har gjort alla uppgifter och svarat på alla frågor i vårt projekt. Svaren finns redovisade i rapporten.
+- [ ] Vi har använt effektiva numeriska metoder enligt sektionen Instruktioner och tips i projektlydelsen.
+- [ ]  Vi har angett i rapporten vilka metoder/algoritmer vi använder och har förklarat hur vi tillämpar dessa på vårt problem.
+- [ ]  Vi har inkluderat eventuellt efterfrågade härledningar för teorifrågor i rapporten.
+- [ ]  Vi har beskrivit hur vi kommer fram till våra resultat som presenteras i rapporten.
+- [ ]  Vi har gjort en rimlighetsuppskattning av våra resultat.
+- [ ]  Vi har gjort (och presenterar) en tillförlitlighetsbedöming av alla numeriska resultat som presenteras i rapporten.
+- [ ]  Vi presenterar resultaten i rapporten med ett rimligt antal siffor.
+- [ ]  Vi har kommenterat och dragit slutsatser av resultaten som presenteras i rapporten.
+- [ ]  Vi har lagt in alla efterfrågade figurer/plottar i rapporten. Plottarna har text på axlarna och en figurtext som förklarar vad plotten visar.
+- [ ]  Vi har beskrivit vår egen arbetsinsats och informerat om eventuella samarbeten i rapporten.
