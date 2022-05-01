@@ -81,3 +81,22 @@ function [tMin, phiMin, rMin] = lowest_point(H, T)
     phiMin = phiSpline(i);
 end
 %}
+
+function [status, tVecToEnd, distVecToEnd, iter] = run_simulation(H, T)
+    [tVec, rVec, rPrimeVec, phiVec, phiPrimVec, status] = RK4(H, T);
+    status = "unknown";
+    previous_distance = inf;
+    for i = 1:length(tVec)
+        current_distance = rVec(i);
+        tVecToEnd = tVec(1:i);
+        distVecToEnd = rVec(1:i);
+        iter = i;
+        if current_distance <= 1
+            status = "crashed";
+            break;
+        elseif current_distance > previous_distance
+            status = "Escaped!!";
+        end
+        previous_distance = current_distance;
+    end
+end
