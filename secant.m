@@ -14,7 +14,7 @@ function [tMin, yMin] = secant(LPI, tVec, yVec)
         for i = 1:n
             t = t1 - (t1 - t0)*y1 / (y1 - y0);
             y = f(t);
-    
+ 
             t0 = t1;            y0 = y1;
             t1 = t;             y1 = y;
         end
