@@ -1,18 +1,18 @@
-function [H_precise, v0, L] = ErrRaket(a)
+function [H_precise, v0, L, tMin, rMin, phiMin] = ErrRaket(a, h)
     % H-värdet måste ligga mellan H3 och H4
     HCrash = 1;     % definitiv krash
     HEscape = 2;     % definitiv undflykt
     T = 5;
-    h = 10^-2;      % Steglängd mellan H3 och H4.
+    step = 10^-2;      % Steglängd mellan H3 och H4.
 
     % Generera HVec och rMinVec
-    HVec = HCrash:h:HEscape;
+    HVec = HCrash:step:HEscape;
     rMinVec = ones(1, length(HVec));
     for i = 1:length(HVec)
         H = HVec(i);
-        [tVec, rVec, ~, ~, ~] = RK4(H, T, a);
+        [tVec, rVec, ~, ~, ~] = RK4(H, T, a, h);
         [~, LPI] = min(rVec);                                       % Returnerar index för den lägsta punkten under flygturen.
-        [~, ~, rMin, ~, ~] = secant(LPI, tVec, rVec);
+        [~, rMin] = secant(LPI, tVec, rVec);
         rMinVec(i) = rMin;
     end
 
@@ -35,11 +35,12 @@ function [H_precise, v0, L] = ErrRaket(a)
     H_precise = x(1);
 
     % Hastigheten v0 raketen sveper förbi jordytan med.
-    [tVec, rVec, rPrimeVec, phiVec, phiPrimeVec] = RK4(H_precise, T, a);
+    [tVec, rVec, ~, phiVec, phiPrimeVec] = RK4(H_precise, T, a, h);
     [~, LPI] = min(rVec);
     phiPrimeMin = phiPrimeVec(LPI);         % Gör noggrannare??
     tMin = tVec(LPI);
     rMin = rVec(LPI);
+    phiMin = phiVec(LPI);
 
     EARTH_CIRCUMF = 4*10^4;                 % (km)
     v0 = phiPrimeMin * EARTH_CIRCUMF/(2*pi*3.6);        

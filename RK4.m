@@ -1,4 +1,4 @@
-function [tVec, rVec, rPrimeVec, phiVec, phiPrimeVec] = RK4(H, T, a)
+function [tVec, rVec, rPrimeVec, phiVec, phiPrimeVec] = RK4(H, T, a, h)
     g = 20;
     F = g/(1+H)^2;
 
@@ -7,7 +7,6 @@ function [tVec, rVec, rPrimeVec, phiVec, phiPrimeVec] = RK4(H, T, a)
     v1 = 0;
     v2 = 0;
     t0 = 0;
-    h = 10^-3;
     n = (T-t0)/h; 
     tVec = t0:h:T;
     a = a * 2*pi/360;

@@ -42,11 +42,13 @@ clc
 % Test av olika starthöjder H mellan 1 och 10 (plottade)
 a = 90;
 T = 2;
+h = 0.001
+
 format long;
 HVec = 1:0.2:2;
 for i = 1:length(HVec)
     H = HVec(i);
-    [tVec, rVec, ~, ~, ~] = RK4(H, T, a);
+    [tVec, rVec, ~, ~, ~] = RK4(H, T, a, h);
     plot(tVec, rVec);
     hold on
     fprintf('Distance at start: %f earth radii \n', H+1)
@@ -66,20 +68,25 @@ clc
 a = 90;
 T = 5;
 H = 2;
+h = 0.001;
 
-% Skriver ut minimihöjden och plottar genererade värden mot polynomet (nästan identiska)
-[tVec, rVec, ~, phiVec, ~] = RK4(H, T, a);
-[~, LPI] = min(rVec);
-[tMin, yMin] = secant(LPI, tVec, rVec);
+% Skriver ut positionsangivelsen för lägsta punkten under flygturen. 
+[tMin, rMin, phiMin] = Minimum(H, h, T)
 
-rMin = yMin;
-tMin = tMin;
+disp(" (t_p, r_p, phi_p) = (" + tMin + ", " + rMin + ", " + phiMin + ")")
 
 
-
-disp("rMin: " + rMin)       % Kortaste avståndet till jordens mittpunkt under flygturen.
-disp("")
-
+%{
+index = 1;
+for i = 0.01:0.01:10
+    [tVec, rVec, ~, phiVec, ~] = RK4(i, T, a);
+    [~, LPI] = min(rVec);
+    phitest(index) = phiVec(LPI);
+    index = index + 1;
+end
+x =  0.01:0.01:10;
+plot(x, phitest)
+%}
 
 %---------------------------------------------------------------------------------------------------------------------------------------------%
 %% d) Hitta gränsfall, bestämma hastighet v0 och rita bankurva.
@@ -100,13 +107,10 @@ HVec = HCrash:h:HEscape;
 rMinVec = ones(1, length(HVec));
 for i = 1:length(HVec)
     H = HVec(i);
-    [tVec, rVec, ~, ~, ~] = RK4(H, T, a);
-    [~, LPI] = min(rVec);                                       % Returnerar index för den lägsta punkten under flygturen.
-    [f, t, rMin, tSpan, ySpan] = secant(LPI, tVec, rVec);
+    [tMin, rMin, ~] = Minimum(H, h, T);
     rMinVec(i) = rMin;
 end
 
-f'(t) = 0 ==> lösa ut t
 
 % plot(HVec, rMinVec)
 
@@ -139,7 +143,7 @@ disp("  H*: " + H_precise)
 
 a = 90;
 % Hastigheten v0 raketen sveper förbi jordytan med.
-[tVec, rVec, rPrimeVec, phiVec, phiPrimeVec] = RK4(H_precise, T, a);
+[tVec, rVec, rPrimeVec, phiVec, phiPrimeVec] = RK4(H_precise, T, a, h);
 [~, LPI] = min(rVec);
 phiPrimeMin = phiPrimeVec(LPI);         % Gör noggrannare??
 tMin = tVec(LPI);
@@ -157,6 +161,11 @@ disp("  velocity v0: " + v0)
 % Bara fram till lägsta punkten?? Se uppgiftsbeskrivning
 plot(tVec(1:LPI), rVec(1:LPI))
 yline(1)
+legend("H*")
+title("Flightpath for exact escape")
+ylabel("Minimum distance form earth's center [e.r.]")
+xlabel('Start height H [e.r.]')
+
 % hold on
 % plot(tMin, rMin, 'rO')        % markering för lägsta punkten
 format long;
@@ -174,9 +183,9 @@ disp("  Arc length L: " + L + " e.r.")
 a = 90;
 aErrs = [2, -2];
 HSum = 0; v0Sum = 0; LSum = 0;
-
+h = 0.001;
 for i = 1:length(aErrs)
-    [H, v0_, L_] = ErrRaket(a+aErrs(i));
+    [H, v0_, L_] = ErrRaket(a+aErrs(i), h);
     HSum = HSum + abs(H);
     v0Sum = v0Sum + abs(v0_);
     LSum = LSum + abs(L_);
@@ -189,3 +198,46 @@ EL = abs(LSum/2 - L);
 disp("Error in H*: " + EH)
 disp("Error in v0: " + Ev0)
 disp("Error in L: " + EL)
+
+
+%% Tillförlitlighetsbedömning
+a = 90;
+
+h = 10^-2;
+h_2 = h/2;
+h_4 = h/4;
+h_8 = h/8;
+hVec = [h h_2 h_4 h_8];
+
+ansMtrx = [];
+for i = 1:length(hVec)
+    h = hVec(i);
+    [H_precise, v0, L, tMin, rMin, phiMin] = ErrRaket(a, h);
+    ansMtrx(i, 1:6) = [H_precise, v0, L, tMin, rMin, phiMin];
+end
+
+disp(ansMtrx)
+
+
+Acc_H_pre = Noggrannhet(ansMtrx(1,1), ansMtrx(2,1), ansMtrx(3,1))
+Acc_v0 = Noggrannhet(ansMtrx(1,2), ansMtrx(2,2), ansMtrx(3,2))
+Acc_L = Noggrannhet(ansMtrx(1,3), ansMtrx(2,3), ansMtrx(3,3))
+Acc_tMin = Noggrannhet(ansMtrx(1,4), ansMtrx(2,4), ansMtrx(3,4))
+Acc_rMin = Noggrannhet(ansMtrx(1,5), ansMtrx(2,5), ansMtrx(3,5))
+Acc_phiMin = Noggrannhet(ansMtrx(1,6), ansMtrx(2,6), ansMtrx(3,6))
+
+
+%% Uppskatta felet i de numeriska svaren.
+function [Kvot, p] = Noggrannhet(Mh, Mh_half, Mh_quarter)
+    Kvot = (Mh - Mh_half)/(Mh_half - Mh_quarter);
+    p = log(Kvot)/log(2); 
+end
+
+function [tMin, rMin, phiMin] = Minimum(H, h, T)
+    h = 1e-3;
+    a = 90;
+    [tVec, rVec, ~, phiVec, ~] = RK4(H, T, a, h);
+    [~, LPI] = min(rVec);
+    [tMin, rMin] = secant(LPI, tVec, rVec);
+    phiMin = phiVec(LPI);
+end
