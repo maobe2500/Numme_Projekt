@@ -12,7 +12,6 @@ clc
     r(t) - avståndet från jordens mitt
     phi(t) - vinkeln från startpunkten
 %}
-
 %% a) Omskrivning av ODE till system av första ordningen 
 %{
     Omskrivning:
@@ -111,32 +110,7 @@ for i = 1:length(HVec)
     rMinVec(i) = rMin;
 end
 
-
-% plot(HVec, rMinVec)
-
-
-
-% Ger rät linje ==> y = kx + m
 % Ser att det är då H är mellan 3.4 och 3.5
-
-% Beräkna k
-H1 = HVec(end);
-H0 = HVec(1);
-rMin1 = rMinVec(end);
-rMin0 = rMinVec(1);
-k = (rMin1 - rMin0)/(H1 - H0);
-disp("  k: " + k)
-
-% Beräkna m
-y = rMin0;
-x = H0;
-m = y - k*x;
-disp("  m: " + m)
-
-% Omskrivning av räta linjens ekvation för att räkna baklänges.
-% Vi söker H (d.v.s. x) då y (rMin) är 1.
-% y = kx+m  ==>  x = (y-m)/k
-x = @(y) (y - m)/k;
 
 H_precise = x(1);
 disp("  H*: " + H_precise)
