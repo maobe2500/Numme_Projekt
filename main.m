@@ -110,10 +110,17 @@ for i = 1:length(HVec)
     rMinVec(i) = rMin;
 end
 
-% Ser att det är då H är mellan 3.4 och 3.5
+% Här har vi tillverkat rminvec och Hvec
+% Nu vill vi använda polyfit för att göra en funktion f från den datan
+% Sen kör vi sekant med f(h) = rminvec(h) - 1 = 0 och får då H*
 
-H_precise = x(1);
-disp("  H*: " + H_precise)
+c = polyfit(HVec, rMinVec, 2);
+f = @(t) c(1)*t^2 + c(2)*t + c(3);
+h0 = 1.2; h1 = 1.5;
+[H_star, ~] = secant(h0, h1, f);
+
+
+disp("  H*: " + H_star)
 
 a = 90;
 % Hastigheten v0 raketen sveper förbi jordytan med.
@@ -212,6 +219,12 @@ function [tMin, rMin, phiMin] = Minimum(H, h, T)
     a = 90;
     [tVec, rVec, ~, phiVec, ~] = RK4(H, T, a, h);
     [~, LPI] = min(rVec);
-    [tMin, rMin] = secant(LPI, tVec, rVec);
+    % Använder sekantmetoden fÖr att bestämma mer exakta minsta värden för yVec.
+    span = 10;      % interpolerar över 21 punkter närmast lägsta punkten
+    ySpan = yVec(LPI-span:LPI+span);
+    tSpan = tVec(LPI-span:LPI+span);
+    c = polyfit(tSpan, ySpan, 2);
+    f = @(t) c(1)*t^2 + c(2)*t + c(3);
+    [tMin, rMin] = secant(LPI, tVec, rVec, f);
     phiMin = phiVec(LPI);
 end
